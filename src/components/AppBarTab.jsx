@@ -1,4 +1,4 @@
-import { Pressable, View } from "react-native";
+import { Pressable, ScrollView } from "react-native";
 import { StyleSheet } from "react-native";
 import { Link } from "react-router-native";
 import Text from "./Text";
@@ -16,7 +16,11 @@ const AppBarTab = () => {
   ];
 
   return (
-    <View style={styles.row}>
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.row}
+    >
       {tabs.map((tab) => (
         <Link
           key={tab.name}
@@ -28,7 +32,7 @@ const AppBarTab = () => {
           <Text style={styles.tabText}>{tab.name}</Text>
         </Link>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -36,6 +40,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
+    paddingRight: 8,
   },
   tab: {
     paddingVertical: 8,
