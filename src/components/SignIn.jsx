@@ -5,8 +5,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { TextInput } from "react-native-paper";
 import useSignIn from "../hooks/useSignIn";
-import AuthStorage from "../utils/authStorage";
-export const authStorage = new AuthStorage("user");
+import { useNavigate } from "react-router-native";
 
 const validationSchema = yup.object().shape({
   username: yup
@@ -21,14 +20,15 @@ const validationSchema = yup.object().shape({
 
 const SignIn = () => {
   const [signIn, { loading, error }] = useSignIn();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: { username: "", password: "" },
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const auth = await signIn(values);
-        await authStorage.setAccessToken(auth?.accessToken);
+        await signIn(values);
+        navigate("/");
       } catch (error) {
         console.log(error);
       }
