@@ -4,6 +4,7 @@ import Text from "./Text";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { TextInput } from "react-native-paper";
+import useSignIn from "../hooks/useSignIn";
 
 const validationSchema = yup.object().shape({
   username: yup
@@ -17,11 +18,18 @@ const validationSchema = yup.object().shape({
 });
 
 const SignIn = () => {
+  const [signIn, { loading, error }] = useSignIn();
+
   const formik = useFormik({
     initialValues: { username: "", password: "" },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      try {
+        const auth = await signIn(values);
+        console.log(auth);
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 
@@ -61,9 +69,17 @@ const SignIn = () => {
         </Text>
       )}
 
-      <Pressable style={styles.pressable} onPress={formik.handleSubmit}>
+      {error && (
+        <Text style={{ color: theme.colors.errorText }}>{error.message}</Text>
+      )}
+
+      <Pressable
+        style={styles.pressable}
+        onPress={formik.handleSubmit}
+        disabled={loading}
+      >
         <Text style={styles.pressableText} fontWeight="bold">
-          Sign In
+          {loading ? "Signing in..." : "Sign In"}
         </Text>
       </Pressable>
     </View>
@@ -71,23 +87,15 @@ const SignIn = () => {
 };
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: "column",
-    padding: 8,
-    backgroundColor: "white",
-  },
-  input: {
-    marginBottom: 8,
-  },
+  row: { flexDirection: "column", padding: 8, backgroundColor: "white" },
+  input: { marginBottom: 8 },
   pressable: {
     backgroundColor: theme.colors.primary,
     borderRadius: 3,
     padding: 8,
+    opacity: 1,
   },
-  pressableText: {
-    color: "white",
-    textAlign: "center",
-  },
+  pressableText: { color: "white", textAlign: "center" },
 });
 
 export default SignIn;
