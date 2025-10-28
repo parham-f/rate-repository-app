@@ -13,6 +13,7 @@ query {
                 reviewCount
                 stargazersCount
                 forksCount
+                id
             }
         }
     }
