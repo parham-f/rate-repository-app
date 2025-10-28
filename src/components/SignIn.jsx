@@ -5,6 +5,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { TextInput } from "react-native-paper";
 import useSignIn from "../hooks/useSignIn";
+import AuthStorage from "../utils/authStorage";
+export const authStorage = new AuthStorage("user");
 
 const validationSchema = yup.object().shape({
   username: yup
@@ -26,7 +28,7 @@ const SignIn = () => {
     onSubmit: async (values) => {
       try {
         const auth = await signIn(values);
-        console.log(auth);
+        await authStorage.setAccessToken(auth?.accessToken);
       } catch (error) {
         console.log(error);
       }
