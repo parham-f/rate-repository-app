@@ -1,6 +1,7 @@
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, Pressable, Linking } from "react-native";
 import Text from "./Text";
 import theme from "../theme";
+import { useNavigate } from "react-router-native";
 
 const formatNumberToK = (num) => {
   if (Math.abs(num) < 1000) {
@@ -20,34 +21,56 @@ const Stat = ({ label, value }) => (
   </View>
 );
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, isSingleRepo }) => {
+  const navigate = useNavigate();
+
   return (
-    <View testID="repositoryItem" style={styles.card}>
-      <View style={styles.headerRow}>
-        <Image style={styles.avatar} source={{ uri: item.ownerAvatarUrl }} />
-        <View style={styles.infoCol}>
-          <Text fontWeight="bold" fontSize="subheading">
-            {item.fullName}
-          </Text>
-          <Text color="textSecondary" style={styles.description}>
-            {item.description}
-          </Text>
+    <Pressable
+      onPress={() => {
+        navigate(`/${item.id}`);
+      }}
+    >
+      <View testID="repositoryItem" style={styles.card}>
+        <View style={styles.headerRow}>
+          <Image style={styles.avatar} source={{ uri: item.ownerAvatarUrl }} />
+          <View style={styles.infoCol}>
+            <Text fontWeight="bold" fontSize="subheading">
+              {item.fullName}
+            </Text>
+            <Text color="textSecondary" style={styles.description}>
+              {item.description}
+            </Text>
 
-          {item.language && (
-            <View style={styles.languagePill}>
-              <Text style={styles.languageText}>{item.language}</Text>
-            </View>
-          )}
+            {item.language && (
+              <View style={styles.languagePill}>
+                <Text style={styles.languageText}>{item.language}</Text>
+              </View>
+            )}
+          </View>
         </View>
-      </View>
 
-      <View style={styles.statsRow}>
-        <Stat label="Stars" value={item.stargazersCount} />
-        <Stat label="Forks" value={item.forksCount} />
-        <Stat label="Reviews" value={item.reviewCount} />
-        <Stat label="Rating" value={item.ratingAverage} />
+        <View style={styles.statsRow}>
+          <Stat label="Stars" value={item.stargazersCount} />
+          <Stat label="Forks" value={item.forksCount} />
+          <Stat label="Reviews" value={item.reviewCount} />
+          <Stat label="Rating" value={item.ratingAverage} />
+        </View>
+        {isSingleRepo && (
+          <Pressable
+            style={styles.pressable}
+            onPress={() => {
+              Linking.openURL(item.url).catch((err) =>
+                console.error("Failed to open URL:", err)
+              );
+            }}
+          >
+            <Text style={styles.pressableText} fontWeight="bold">
+              Open in GitHub
+            </Text>
+          </Pressable>
+        )}
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -94,6 +117,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  pressable: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: 3,
+    padding: 8,
+    margin: 8,
+    opacity: 1,
+  },
+  pressableText: { color: "white", textAlign: "center" },
 });
 
 export default RepositoryItem;

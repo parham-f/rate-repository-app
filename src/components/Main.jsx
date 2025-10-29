@@ -1,6 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
+import SingleRepository from "./SingleRepository";
 import SignOut from "./SignOut";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Route, Routes, Navigate } from "react-router-native";
@@ -24,6 +25,7 @@ const Main = () => {
           <Route path="/" element={<RepositoryList />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signout" element={<SignOut />} />
+          <Route path="/:repoID" element={<SingleRepository />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </View>
