@@ -13,7 +13,7 @@ export default [
   ...compat.config({
     plugins: ["react", "react-native"],
     settings: { react: { version: "detect" } },
-    extends: ["plugin:react/recommended"],
+    extends: ["eslint:recommended", "plugin:react/recommended", "plugin:jest/recommended"],
     parser: "@babel/eslint-parser",
     parserOptions: {
       requireConfigFile: false,
