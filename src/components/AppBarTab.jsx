@@ -9,9 +9,12 @@ const AppBarTab = () => {
 
   const tabs = [
     { name: "Repositories", linkTo: "/" },
-    user
-      ? { name: "SignOut", linkTo: "/signout" }
-      : { name: "SignIn", linkTo: "/signin" },
+    ...(user
+      ? [
+          { name: "Create Review", linkTo: "/createReview" },
+          { name: "SignOut", linkTo: "/signout" },
+        ]
+      : [{ name: "SignIn", linkTo: "/signin" }]),
   ];
 
   return (
@@ -33,12 +36,6 @@ const AppBarTab = () => {
           </Link>
         ))}
       </ScrollView>
-
-      {user && (
-        <View style={styles.tab}>
-          <Text style={styles.tabText}>{user}</Text>
-        </View>
-      )}
     </>
   );
 };
