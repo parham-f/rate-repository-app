@@ -24,3 +24,12 @@ export const CREATE_REVIEW = gql`
     }
   }
 `;
+
+export const SIGNUP = gql`
+  mutation signUp($user: CreateUserInput) {
+    createUser(user: $user) {
+      username
+      id
+    }
+  }
+`;

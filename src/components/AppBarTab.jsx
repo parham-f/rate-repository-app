@@ -14,7 +14,10 @@ const AppBarTab = () => {
           { name: "Create Review", linkTo: "/createReview" },
           { name: "SignOut", linkTo: "/signout" },
         ]
-      : [{ name: "SignIn", linkTo: "/signin" }]),
+      : [
+          { name: "SignIn", linkTo: "/signin" },
+          { name: "SignUp", linkTo: "/signup" },
+        ]),
   ];
 
   return (
