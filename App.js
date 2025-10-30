@@ -4,6 +4,7 @@ import { ApolloProvider } from '@apollo/client/react'
 import createApolloClient from './src/utils/apolloClient';
 import AuthStorage from './src/utils/authStorage';
 import AuthStorageContext from './src/contexts/AuthStorageContext';
+import AndroidHardwareBack from './src/components/AndroidHardwareBack';
 
 const authStorage = new AuthStorage();
 export const apolloClient = createApolloClient(authStorage);
@@ -11,6 +12,7 @@ export const apolloClient = createApolloClient(authStorage);
 const App = () => {
   return (
     <NativeRouter >
+      <AndroidHardwareBack />
       <ApolloProvider client={apolloClient}>
         <AuthStorageContext.Provider value={authStorage}>
           <Main />
