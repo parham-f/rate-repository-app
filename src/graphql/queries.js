@@ -30,11 +30,13 @@ query ($withReviews: Boolean!){
     reviews @include(if: $withReviews){
       edges {
         node {
+          id
           rating
           user {
             username
           }
           createdAt
+          repositoryId
           text
         }
       }

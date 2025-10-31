@@ -11,13 +11,13 @@ const styles = StyleSheet.create({
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const MyReviews = () => {
-  const data = userQuery(true);
+  const { data, refetch } = userQuery(true);
   const reviews = data?.me?.reviews?.edges?.map((e) => e.node) ?? [];
 
   return (
     <FlatList
       data={reviews}
-      renderItem={({ item }) => <ReviewItem review={item} />}
+      renderItem={({ item }) => <ReviewItem review={item} refetch={refetch} />}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={ItemSeparator}
       ListFooterComponent={<View></View>}

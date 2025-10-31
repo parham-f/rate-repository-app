@@ -4,7 +4,7 @@ import Text from "../components/Text";
 
 
 const userQuery = (withReviewsBoolean) => {
-    const { data, loading, error } = useQuery(ME, {
+    const { data, loading, error, refetch } = useQuery(ME, {
     variables: { withReviews: withReviewsBoolean},
     fetchPolicy: 'cache-and-network'
   });
@@ -12,7 +12,7 @@ const userQuery = (withReviewsBoolean) => {
     if (loading) return <Text>Loading...</Text>;
     if (error) return <Text>Error: {error.message}</Text>;
 
-    return data;
+    return {data, refetch};
 };
 
 export default userQuery;
