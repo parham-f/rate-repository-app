@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.repositoryBackground || "#fff",
     padding: 16,
     borderRadius: 8,
-    marginBottom: 12,
+    marginBottom: 5,
+    margin: 15,
   },
   headerRow: {
     flexDirection: "row",
