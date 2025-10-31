@@ -33,6 +33,8 @@ const SingleRepository = () => {
       ListHeaderComponent={() => (
         <RepositoryItem item={repository} isSingleRepo={true} />
       )}
+      ListFooterComponent={<View></View>}
+      ListFooterComponentStyle={{ marginBottom: 20 }}
     />
   );
 };

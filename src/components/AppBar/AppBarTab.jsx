@@ -7,7 +7,6 @@ import userQuery from "../../utils/userQuery";
 const AppBarTab = () => {
   const data = userQuery(false);
   const user = data?.me?.username ? data.me.username : "";
-  console.log(user);
 
   const tabs = [
     { name: "Repositories", linkTo: "/" },

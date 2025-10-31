@@ -30,26 +30,15 @@ query ($withReviews: Boolean!){
     reviews @include(if: $withReviews){
       edges {
         node {
-          repository {
-            reviews {
-              edges {
-                node {
-                  id
-                  text
-                  rating
-                  createdAt
-                  user {
-                    id
-                    username
-                  }
-                }
-              }
-            }
+          rating
+          user {
+            username
           }
+          createdAt
+          text
         }
       }
     }
   }
 }
-${REPOSITORY_BASE_FIELDS}
 `;
