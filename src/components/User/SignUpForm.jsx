@@ -1,42 +1,59 @@
 import { Pressable, View, StyleSheet } from "react-native";
-import theme from "../theme";
-import Text from "./Text";
+import theme from "../../theme";
+import Text from "../Text";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { TextInput } from "react-native-paper";
-import useSignIn from "../hooks/useSignIn";
+import useSignUp from "../../hooks/useSignUp";
 import { useNavigate } from "react-router-native";
 
 const validationSchema = yup.object().shape({
   username: yup
     .string()
     .min(5, "Username must be at least 5 characters!")
+    .max(30, "Username cannot exceed 30 characters!")
     .required("Username is required!"),
   password: yup
     .string()
     .min(5, "Password must be at least 5 characters!")
+    .max(30, "Password cannot exceed 30 characters!")
     .required("Password is required!"),
+  passwordConfirmation: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Password does not match!")
+    .required("Password confirmation is required!"),
 });
 
-const SignIn = () => {
-  const [signIn, { loading, error }] = useSignIn();
+const SignUpForm = () => {
+  const [signUp, { loading, error }] = useSignUp();
   const navigate = useNavigate();
 
   const formik = useFormik({
-    initialValues: { username: "", password: "" },
+    initialValues: {
+      username: "",
+      password: "",
+      passwordConfirmation: "",
+    },
     validationSchema,
     onSubmit: async (values) => {
+      const payload = {
+        username: values.username,
+        password: values.password,
+      };
       try {
-        await signIn(values);
+        await signUp(payload);
         navigate("/");
-      } catch (error) {
-        console.log(error);
+      } catch (e) {
+        console.log(e);
       }
     },
   });
 
-  const userErr = !!(formik.touched.username && formik.errors.username);
-  const passErr = !!(formik.touched.password && formik.errors.password);
+  const usernameErr = !!(formik.touched.username && formik.errors.username);
+  const passwordErr = !!(formik.touched.password && formik.errors.password);
+  const passwordConfirmationErr = !!(
+    formik.touched.passwordConfirmation && formik.errors.passwordConfirmation
+  );
 
   return (
     <View style={styles.row}>
@@ -46,10 +63,10 @@ const SignIn = () => {
         value={formik.values.username}
         onChangeText={formik.handleChange("username")}
         onBlur={formik.handleBlur("username")}
-        error={userErr}
+        error={usernameErr}
         style={styles.input}
       />
-      {userErr && (
+      {usernameErr && (
         <Text style={{ color: theme.colors.errorText }}>
           {formik.errors.username}
         </Text>
@@ -62,12 +79,28 @@ const SignIn = () => {
         value={formik.values.password}
         onChangeText={formik.handleChange("password")}
         onBlur={formik.handleBlur("password")}
-        error={passErr}
+        error={passwordErr}
         style={styles.input}
       />
-      {passErr && (
+      {passwordErr && (
         <Text style={{ color: theme.colors.errorText }}>
           {formik.errors.password}
+        </Text>
+      )}
+
+      <TextInput
+        mode="outlined"
+        label="Password confirmation"
+        secureTextEntry
+        value={formik.values.passwordConfirmation}
+        onChangeText={formik.handleChange("passwordConfirmation")}
+        onBlur={formik.handleBlur("passwordConfirmation")}
+        error={passwordConfirmationErr}
+        style={styles.input}
+      />
+      {passwordConfirmationErr && (
+        <Text style={{ color: theme.colors.errorText }}>
+          {formik.errors.passwordConfirmation}
         </Text>
       )}
 
@@ -81,7 +114,7 @@ const SignIn = () => {
         disabled={loading}
       >
         <Text style={styles.pressableText} fontWeight="bold">
-          {loading ? "Signing in..." : "Sign In"}
+          Sign up
         </Text>
       </Pressable>
     </View>
@@ -100,4 +133,4 @@ const styles = StyleSheet.create({
   pressableText: { color: "white", textAlign: "center" },
 });
 
-export default SignIn;
+export default SignUpForm;

@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import Constants from "expo-constants";
-import theme from "../theme";
+import theme from "../../theme";
 import { Appbar } from "react-native-paper";
 import AppBarTab from "./AppBarTab";
 

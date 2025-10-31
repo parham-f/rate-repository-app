@@ -1,6 +1,6 @@
 import { View, Image, StyleSheet, Pressable, Linking } from "react-native";
-import Text from "./Text";
-import theme from "../theme";
+import Text from "../Text";
+import theme from "../../theme";
 import { parseISO, format } from "date-fns";
 
 const ReviewItem = ({ review }) => {

@@ -1,8 +1,8 @@
-import Text from "./Text";
+import Text from "../Text";
 import { useParams } from "react-router-native";
-import useRepository from "../hooks/useRepository";
+import useRepository from "../../hooks/useRepository";
 import RepositoryItem from "./RepositoryItem";
-import ReviewItem from "./ReviewItem";
+import ReviewItem from "../Review/ReviewItem";
 import { StyleSheet, View, FlatList } from "react-native";
 
 const styles = StyleSheet.create({

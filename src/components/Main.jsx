@@ -1,10 +1,10 @@
 import { StyleSheet, View } from "react-native";
-import RepositoryList from "./RepositoryList";
-import SignIn from "./SignIn";
-import SingleRepository from "./SingleRepository";
-import SignOut from "./SignOut";
-import SignUpForm from "./SignUpForm";
-import ReviewForm from "./ReviewForm";
+import RepositoryList from "./Repository/RepositoryList";
+import SignIn from "./User/SignIn";
+import SingleRepository from "./Repository/SingleRepository";
+import SignOut from "./User/SignOut";
+import SignUpForm from "./User/SignUpForm";
+import ReviewForm from "./Review/ReviewForm";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Route, Routes, Navigate } from "react-router-native";
 import AppBar from "./AppBar";

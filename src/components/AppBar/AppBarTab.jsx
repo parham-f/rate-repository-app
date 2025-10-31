@@ -1,8 +1,8 @@
 import { Pressable, ScrollView, View } from "react-native";
 import { StyleSheet } from "react-native";
 import { Link } from "react-router-native";
-import Text from "./Text";
-import userQuery from "../utils/userQuery";
+import Text from "../Text";
+import userQuery from "../../utils/userQuery";
 
 const AppBarTab = () => {
   const user = userQuery();

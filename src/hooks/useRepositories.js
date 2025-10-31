@@ -2,8 +2,12 @@ import { useQuery } from '@apollo/client/react';
 import { GET_REPOSITORIES } from '../graphql/queries';
 import Text from '../components/Text';
 
-const useRepositories = () => {
+const useRepositories = ({sortOption}) => {
   const { data, error, loading } = useQuery(GET_REPOSITORIES, {
+    variables: {
+      orderBy: sortOption.orderBy,
+      orderDirection: sortOption.orderDirection,
+    },
     fetchPolicy: 'cache-and-network',
   });
 

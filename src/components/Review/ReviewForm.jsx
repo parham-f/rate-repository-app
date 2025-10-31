@@ -1,10 +1,10 @@
 import { Pressable, View, StyleSheet } from "react-native";
-import theme from "../theme";
-import Text from "./Text";
+import theme from "../../theme";
+import Text from "../Text";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { TextInput } from "react-native-paper";
-import useCreateReview from "../hooks/useCreateReview";
+import useCreateReview from "../../hooks/useCreateReview";
 import { useNavigate } from "react-router-native";
 
 const validationSchema = yup.object().shape({

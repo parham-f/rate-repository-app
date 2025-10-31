@@ -1,4 +1,4 @@
-import useSignOut from "../hooks/useSignOut";
+import useSignOut from "../../hooks/useSignOut";
 import { useNavigate } from "react-router-native";
 import { useEffect } from "react";
 
