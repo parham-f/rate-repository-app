@@ -5,13 +5,16 @@ import Text from "../Text";
 import userQuery from "../../utils/userQuery";
 
 const AppBarTab = () => {
-  const user = userQuery();
+  const data = userQuery(false);
+  const user = data?.me?.username ? data.me.username : "";
+  console.log(user);
 
   const tabs = [
     { name: "Repositories", linkTo: "/" },
     ...(user
       ? [
           { name: "Create Review", linkTo: "/createReview" },
+          { name: "My Reviews", linkTo: "/myReviews" },
           { name: "SignOut", linkTo: "/signout" },
         ]
       : [

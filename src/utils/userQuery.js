@@ -3,14 +3,16 @@ import { ME } from "../graphql/queries";
 import Text from "../components/Text";
 
 
-const userQuery = () => {
-    const { data, loading, error } = useQuery(ME);
+const userQuery = (withReviewsBoolean) => {
+    const { data, loading, error } = useQuery(ME, {
+    variables: { withReviews: withReviewsBoolean},
+    fetchPolicy: 'cache-and-network'
+  });
 
     if (loading) return <Text>Loading...</Text>;
     if (error) return <Text>Error: {error.message}</Text>;
 
-    const user = data?.me?.username ? data.me.username : "";
-    return user;
+    return data;
 };
 
 export default userQuery;

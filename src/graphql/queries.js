@@ -24,9 +24,32 @@ ${REPOSITORY_INFO}
 `;
 
 export const ME = gql`
-query {
+query ($withReviews: Boolean!){
   me {
     username
+    reviews @include(if: $withReviews){
+      edges {
+        node {
+          repository {
+            reviews {
+              edges {
+                node {
+                  id
+                  text
+                  rating
+                  createdAt
+                  user {
+                    id
+                    username
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
+${REPOSITORY_BASE_FIELDS}
 `;
