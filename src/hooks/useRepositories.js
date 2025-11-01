@@ -1,27 +1,36 @@
 import { useQuery } from '@apollo/client/react';
 import { GET_REPOSITORIES } from '../graphql/queries';
-import Text from '../components/Text';
 
-const useRepositories = ({sortOption, searchQuery}) => {
-  const { data, error, loading } = useQuery(GET_REPOSITORIES, {
-    variables: {
-      searchKeyword: searchQuery,
-      orderBy: sortOption.orderBy,
-      orderDirection: sortOption.orderDirection,
-    },
-    fetchPolicy: 'cache-and-network',
-    returnPartialData: true
-  });
+const PAGE_SIZE = 6;
 
-  if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error: {error.message}</Text>;
+const useRepositories = ({ sortOption, searchQuery }) => {
+  const base = {
+    searchKeyword: searchQuery || undefined,
+    orderBy: sortOption?.orderBy,
+    orderDirection: sortOption?.orderDirection,
+    first: PAGE_SIZE,
+  };
 
-  const repositories =
-    data?.repositories?.edges?.map(e => e.node) ??
-    data?.repositories ??
-    [];
+  const { data, error, loading, fetchMore, networkStatus } = useQuery(
+    GET_REPOSITORIES,
+    {
+      variables: base,
+      fetchPolicy: 'cache-and-network',
+      returnPartialData: true,
+      notifyOnNetworkStatusChange: true,
+    }
+  );
 
-  return { repositories, loading, error };
+  const handleFetchMore = () => {
+    const pageInfo = data?.repositories?.pageInfo;
+    if (loading || !pageInfo?.hasNextPage) return;
+    return fetchMore({
+      variables: { ...base, after: pageInfo.endCursor },
+    });
+  };
+
+  const repositories = data?.repositories?.edges?.map(e => e.node) ?? [];
+  return { repositories, loading, error, fetchMore: handleFetchMore, networkStatus };
 };
 
 export default useRepositories;

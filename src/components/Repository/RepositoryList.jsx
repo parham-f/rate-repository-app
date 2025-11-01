@@ -1,10 +1,12 @@
 import { FlatList, View, StyleSheet, ActivityIndicator } from "react-native";
+import Text from "../Text";
 import RepositoryItem from "./RepositoryItem";
 import ListOrderSelect from "./ListOrderSelect";
 import SearchBar from "./SearchBar";
 import useRepositories from "../../hooks/useRepositories";
 import { useState, useMemo } from "react";
 import { useDebounce } from "use-debounce";
+import { NetworkStatus } from "@apollo/client";
 
 const styles = StyleSheet.create({ separator: { height: 10 } });
 const ItemSeparator = () => <View style={styles.separator} />;
@@ -22,23 +24,30 @@ const RepositoryList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery] = useDebounce(searchQuery, 500);
 
-  const { repositories, error, loading, networkStatus } = useRepositories({
-    sortOption,
-    searchQuery: debouncedQuery,
-  });
-
-  if (error) return <Text>Error: {String(error.message || error)}</Text>;
+  const { repositories, error, loading, fetchMore, networkStatus } =
+    useRepositories({ sortOption, searchQuery: debouncedQuery });
 
   const header = useMemo(
     () => (
       <View>
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <ListOrderSelect sortKey={sortKey} setSortKey={setSortKey} />
-        {networkStatus === 4 && <ActivityIndicator style={{ margin: 8 }} />}
+        {networkStatus === NetworkStatus.fetchMore && (
+          <ActivityIndicator style={{ margin: 8 }} />
+        )}
       </View>
     ),
     [searchQuery, sortKey, networkStatus]
   );
+
+  if (error) return <Text>Error: {String(error.message || error)}</Text>;
+  if (loading && repositories.length === 0) {
+    return (
+      <View style={{ padding: 16 }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   return (
     <FlatList
@@ -50,8 +59,9 @@ const RepositoryList = () => {
       keyExtractor={(item) => item.id}
       ListHeaderComponent={header}
       keyboardShouldPersistTaps="handled"
-      ListFooterComponent={<View></View>}
-      ListFooterComponentStyle={{ marginBottom: 20 }}
+      ListFooterComponent={<View style={{ marginBottom: 20 }} />}
+      onEndReached={fetchMore}
+      onEndReachedThreshold={0.5}
     />
   );
 };

@@ -33,19 +33,5 @@ export const REPOSITORY_INFO = gql`
     description
     language
     createdAt
-    reviews {
-      edges {
-        node {
-          id
-          text
-          rating
-          createdAt
-          user {
-            id
-            username
-          }
-        }
-      }
-    }
   }
 `;
